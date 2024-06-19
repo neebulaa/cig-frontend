@@ -1,0 +1,19 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Poppins", system-ui, sans-serif;
+}
+
+:root {
+	--dark: #0d0d0d;
+}
+
+body {
+	background: var(--dark);
+	color: white;
+}
+
+/* navbar - start */
+
+/* navbar - end */
