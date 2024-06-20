@@ -1,0 +1,17 @@
+@keyframes fadeInAndOut {
+	0%,
+	30%,
+	100% {
+		opacity: 0;
+	}
+	10%,
+	20% {
+		opacity: 1;
+	}
+}
+
+@keyframes carousel {
+	100% {
+		translate: -100%;
+	}
+}

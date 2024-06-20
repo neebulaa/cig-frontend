@@ -18,7 +18,6 @@ export default function AppProvider({ children }: AppProviderProps) {
 
 	async function getData() {
 		const pageContent = await fetching("get", "page_contents");
-		console.log(pageContent);
 		setPageContent(pageContent.data.page_contents);
 	}
 

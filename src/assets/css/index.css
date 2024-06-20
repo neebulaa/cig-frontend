@@ -7,13 +7,379 @@
 
 :root {
 	--dark: #0d0d0d;
+	--gray: rgb(85, 85, 85);
+	--light-gray: rgb(194, 194, 194);
+	--primary: #ff5b5b;
+	--white: whitesmoke;
 }
 
 body {
 	background: var(--dark);
-	color: white;
+	color: var(--white);
+}
+
+ul,
+ol,
+li {
+	list-style: none;
+}
+
+a {
+	content: "";
+	text-decoration: none;
+	color: inherit;
+	position: relative;
+}
+
+a:not(.btn)::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	border-radius: 100px;
+	background: var(--light-gray);
+	bottom: -2px;
+	left: 0;
+	scale: 0 1;
+	transform-origin: right center;
+	transition: scale 0.3s;
+}
+
+a:not(.btn):hover::after {
+	transform-origin: left center;
+	scale: 1;
+}
+
+/* utils/component */
+.mt-1 {
+	margin-top: 1rem;
+}
+
+.mt-2 {
+	margin-top: 2rem;
+}
+
+.mt-05 {
+	margin-top: 0.5rem;
+}
+
+.mb-1 {
+	margin-bottom: 1rem;
+}
+
+.mb-2 {
+	margin-bottom: 2rem;
+}
+
+.mb-05 {
+	margin-bottom: 0.5rem;
+}
+
+.container {
+	max-width: 1200px;
+	margin: auto;
+	padding-inline: 2rem;
+}
+
+.main-section + .main-section {
+	padding-block: 4rem;
+}
+
+.section-header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.section-header-title {
+	background: linear-gradient(to bottom, var(--primary), #af4040);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	font-size: 1.5rem;
+	text-transform: uppercase;
+}
+
+.section-header-tagline {
+	font-size: 2rem;
+	color: var(--white);
+}
+
+.section-seperator {
+	border-block: 1px solid var(--gray);
+}
+
+.btn {
+	position: relative;
+	padding: 0.75rem 1.5rem;
+	border-radius: 100px;
+	text-transform: capitalize;
+	z-index: 1;
+	background: var(--primary);
+	transition: 0.3s;
+}
+
+.btn::after {
+	content: "";
+	position: absolute;
+	border-radius: 100px;
+	inset: 1px;
+	z-index: -1;
+	background: linear-gradient(to bottom right, var(--primary), #af4040);
+}
+
+.btn:hover {
+	opacity: 0.8;
+}
+
+.btn-empty {
+	background: linear-gradient(
+		to bottom right,
+		var(--gray),
+		rgb(122, 80, 80),
+		var(--gray)
+	);
+}
+
+.btn-empty::after {
+	background: var(--dark);
 }
 
 /* navbar - start */
+#navbar {
+	position: sticky;
+	top: 2rem;
+	z-index: 1000;
+	padding-bottom: 4rem;
+}
 
+#navbar .navbar-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	width: max-content;
+	margin: auto;
+	background: var(--dark);
+	padding: 0.5rem 1.5rem 0.5rem 1rem;
+	border-radius: 1000px;
+}
+
+#navbar .navbar-logo {
+	width: 40px;
+	height: 40px;
+}
+
+#navbar .navbar-logo img {
+	width: 100%;
+	height: 100%;
+}
+
+#navbar .navbar-links {
+	text-transform: capitalize;
+	display: flex;
+	gap: 1rem;
+}
 /* navbar - end */
+
+/* main - hero section - start */
+#hero .hero-title {
+	text-align: center;
+	margin-bottom: 0.5rem;
+}
+
+#hero .hero-description {
+	margin-top: 0.5rem;
+	text-align: center;
+}
+
+#hero .hero-image {
+	position: relative;
+	width: 100%;
+	height: 340px;
+}
+
+#hero .hero-image img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	animation: fadeInAndOut 9s calc(var(--order) * 3s) linear infinite;
+}
+
+.hero-buttons {
+	max-width: 450px;
+	flex-wrap: wrap;
+	margin: auto;
+	margin-top: 1rem;
+	gap: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hero-buttons .btn {
+	text-align: center;
+	flex: 1 1 200px;
+}
+
+.hero-slider {
+	margin-top: 4rem;
+	border-block: 1px solid var(--gray);
+	padding: 1rem;
+}
+
+.hero-slider .container {
+	overflow-x: hidden;
+}
+
+.hero-slider .container .sliders {
+	display: flex;
+	min-width: 1200px;
+	max-width: 100%;
+	animation: carousel 10s linear infinite;
+}
+
+.hero-slider .container .slider {
+	min-width: 1200px;
+	max-width: 100%;
+	display: flex;
+	gap: 10rem;
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+}
+/* main - hero section - end */
+
+/* main - pin points section - start */
+#pinpoints .pinpoints-map {
+	position: relative;
+	aspect-ratio: 16 / 9;
+}
+
+#pinpoints .map-image {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#pinpoints .pinpoint {
+	position: absolute;
+	width: 30px;
+	top: calc(var(--top) * 1%);
+	left: calc(var(--left) * 1%);
+}
+
+#pinpoints .pinpoint .pinpoint-image {
+	filter: drop-shadow(0 0 3px white);
+	width: 100%;
+	display: block;
+}
+
+#pinpoints .pinpoint-comodities {
+	position: absolute;
+	top: 0.25rem;
+	left: 50%;
+	translate: -50%;
+	width: 12px;
+	height: 12px;
+}
+
+#pinpoints .pinpoint-comodities img {
+	position: absolute;
+	z-index: 10;
+	width: 12px;
+	height: 12px;
+	opacity: 0;
+	animation: fadeInAndOut calc(var(--total) * 2s) calc(var(--order) * 2s)
+		linear infinite;
+}
+
+#pinpoints .pinpoint .pinpoint-identifier {
+	top: 100%;
+	width: 300px;
+	max-width: 100vw;
+	padding: 1rem;
+	position: absolute;
+	border-radius: 8px;
+	background: linear-gradient(
+		to bottom right,
+		var(--gray),
+		rgb(122, 80, 80),
+		var(--gray)
+	);
+	z-index: 10;
+
+	display: none !important;
+}
+
+#pinpoints .pinpoint:hover .pinpoint-identifier {
+	display: block !important;
+}
+
+#pinpoints .pinpoint:hover .pinpoint-identifier.identifier-harbor {
+	display: flex !important;
+}
+
+#pinpoints .pinpoint .pinpoint-identifier::after {
+	content: "";
+	padding: 1rem;
+	position: absolute;
+	background: var(--dark);
+	inset: 1px;
+	border-radius: 8px;
+	z-index: -1;
+}
+
+#pinpoints .pinpoint .pinpoint-identifier .pinpoint-identifier-name {
+	font-size: 1rem;
+}
+
+#pinpoints .pinpoint .pinpoint-identifier .pinpoint-identifier-description {
+	color: var(--light-gray);
+}
+
+#pinpoints .pinpoint .pinpoint-identifier.identifier-harbor {
+	gap: 1rem;
+	align-items: center;
+	display: flex;
+}
+
+#pinpoints .pinpoint .pinpoint-identifier.identifier-harbor img {
+	width: 25px;
+	object-fit: contain;
+}
+
+#pinpoints
+	.pinpoint
+	.pinpoint-identifier.identifier-province
+	.pinpoint-identifier-comodity {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+}
+
+#pinpoints
+	.pinpoint
+	.pinpoint-identifier.identifier-province
+	.pinpoint-identifier-comodity-inline {
+	display: flex;
+	align-items: center;
+	gap: 0.1rem;
+}
+
+#pinpoints
+	.pinpoint
+	.pinpoint-identifier.identifier-province
+	.pinpoint-identifier-comodity-inline
+	img {
+	height: 20px;
+	width: 20px;
+	object-fit: contain;
+}
+
+/* main - pin points section - end */

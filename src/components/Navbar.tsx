@@ -5,24 +5,9 @@ export default function Navbar() {
 	const { pathname } = useLocation();
 	const links = [
 		{
-			text: "about",
-			path: "/#about",
+			text: "Home",
+			path: "/",
 			active: false,
-		},
-		{
-			text: "visions",
-			path: "/#visions",
-			active: false,
-		},
-		{
-			text: "benefits",
-			path: "/#benefits",
-			active: false,
-		},
-		{
-			text: "products",
-			path: "/products",
-			active: pathname == "/products",
 		},
 		{
 			text: "comodities",
@@ -35,38 +20,44 @@ export default function Navbar() {
 			active: false,
 		},
 		{
-			text: "articles",
-			path: "/articles",
-			active: pathname == "/products",
-		},
-		{
 			text: "certifications",
 			path: "/#certifications",
 			active: false,
 		},
 		{
-			text: "location",
-			path: "/#location",
-			active: false,
+			text: "articles",
+			path: "/articles",
+			active: pathname == "/products",
+		},
+		{
+			text: "products",
+			path: "/products",
+			active: pathname == "/products",
 		},
 	];
 	return (
-		<nav id="navbar" aria-description="A Navbar to navigate across pages">
-			<section className="navbar-logo">
-				<img src={Logo} alt="CIG's Logo" />
-			</section>
-			<ul className="navbar-links">
-				{links.map((link) => (
-					<li>
-						<a
-							href={link.path}
-							className={link.active ? "active" : ""}
-						>
-							{link.text}
-						</a>
-					</li>
-				))}
-			</ul>
+		<nav
+			className="container"
+			id="navbar"
+			aria-description="A Navbar to navigate across pages"
+		>
+			<div className="navbar-container">
+				<section className="navbar-logo">
+					<img src={Logo} alt="CIG's Logo" />
+				</section>
+				<ul className="navbar-links">
+					{links.map((link, i) => (
+						<li key={i}>
+							<a
+								href={link.path}
+								className={link.active ? "active" : ""}
+							>
+								{link.text}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
 		</nav>
 	);
 }
