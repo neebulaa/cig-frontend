@@ -8,6 +8,7 @@
 :root {
 	--dark: #0d0d0d;
 	--gray: rgb(85, 85, 85);
+	--dim-gray: rgb(138, 138, 138);
 	--light-gray: rgb(194, 194, 194);
 	--primary: #ff5b5b;
 	--white: whitesmoke;
@@ -76,20 +77,18 @@ a:not(.btn):hover::after {
 }
 
 .container {
-	max-width: 1200px;
+	max-width: 1240px;
 	margin: auto;
 	padding-inline: 2rem;
 }
 
 .main-section + .main-section {
-	padding-block: 4rem;
+	padding-block: 6rem;
 }
 
 .section-header {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 }
 
 .section-header-title {
@@ -103,6 +102,7 @@ a:not(.btn):hover::after {
 
 .section-header-tagline {
 	font-size: 2rem;
+	text-transform: capitalize;
 	color: var(--white);
 }
 
@@ -136,9 +136,9 @@ a:not(.btn):hover::after {
 .btn-empty {
 	background: linear-gradient(
 		to bottom right,
-		var(--gray),
-		rgb(122, 80, 80),
-		var(--gray)
+		var(--dim-gray),
+		rgb(146, 93, 93),
+		var(--dim-gray)
 	);
 }
 
@@ -207,15 +207,13 @@ a:not(.btn):hover::after {
 	object-fit: contain;
 	top: 0;
 	left: 0;
-	opacity: 0;
-	animation: fadeInAndOut 9s calc(var(--order) * 3s) linear infinite;
 }
 
 .hero-buttons {
 	max-width: 450px;
 	flex-wrap: wrap;
 	margin: auto;
-	margin-top: 1rem;
+	margin-top: 2rem;
 	gap: 1rem;
 	display: flex;
 	justify-content: center;
@@ -239,13 +237,13 @@ a:not(.btn):hover::after {
 
 .hero-slider .container .sliders {
 	display: flex;
-	min-width: 1200px;
+	min-width: 1240px;
 	max-width: 100%;
 	animation: carousel 10s linear infinite;
 }
 
 .hero-slider .container .slider {
-	min-width: 1200px;
+	min-width: 1240px;
 	max-width: 100%;
 	display: flex;
 	gap: 10rem;
@@ -256,6 +254,14 @@ a:not(.btn):hover::after {
 /* main - hero section - end */
 
 /* main - pin points section - start */
+#pinpoints {
+	padding-bottom: 2rem;
+}
+
+#pinpoints .section-header {
+	align-items: center;
+}
+
 #pinpoints .pinpoints-map {
 	position: relative;
 	aspect-ratio: 16 / 9;
@@ -294,9 +300,6 @@ a:not(.btn):hover::after {
 	z-index: 10;
 	width: 12px;
 	height: 12px;
-	opacity: 0;
-	animation: fadeInAndOut calc(var(--total) * 2s) calc(var(--order) * 2s)
-		linear infinite;
 }
 
 #pinpoints .pinpoint .pinpoint-identifier {
@@ -309,7 +312,7 @@ a:not(.btn):hover::after {
 	background: linear-gradient(
 		to bottom right,
 		var(--gray),
-		rgb(122, 80, 80),
+		rgb(146, 93, 93),
 		var(--gray)
 	);
 	z-index: 10;
@@ -383,3 +386,114 @@ a:not(.btn):hover::after {
 }
 
 /* main - pin points section - end */
+
+/* main - about section - start */
+#about .container {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
+#about .container > section {
+	flex: 1;
+}
+
+#about .about-images {
+	display: flex;
+}
+
+#about .about-images img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	flex: 1;
+}
+/* main - about section - end */
+
+/* main - visions section - start */
+#vision .vision-split {
+	display: flex;
+	gap: 2rem;
+	min-height: 500px;
+}
+
+#vision .vision-split > section {
+	flex: 1;
+}
+
+#vision .vision-images {
+	position: relative;
+}
+
+#vision .vision-images .vision-image {
+	position: absolute;
+	width: 80%;
+	height: 250px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+#vision .vision-images .vision-image:first-child {
+	rotate: 5deg;
+}
+
+#vision .vision-images .vision-image:nth-child(2) {
+	rotate: -2deg;
+	top: 28%;
+}
+
+#vision .vision-images .vision-image:last-child {
+	rotate: 2deg;
+	top: 55%;
+}
+
+#vision .vision-images .vision-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+#vision .vision-content {
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+	margin-top: 3rem;
+}
+
+#vision .vision-card {
+	position: relative;
+	z-index: 1;
+}
+
+#vision .vision-card .vision-card-number {
+	font-family: "Rubik";
+	font-weight: 500;
+	font-size: 6rem;
+	line-height: 1;
+	position: absolute;
+	top: -2rem;
+	left: -0.5rem;
+	z-index: -1;
+	color: var(--dark);
+	text-shadow: -1px 0 var(--dim-gray), 0 1px var(--dim-gray), 1px 0 var(--dim-gray),
+		0 -1px var(--dim-gray);
+}
+
+#vision .vision-card .vision-card-number::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 30%;
+	bottom: 10px;
+	left: 0;
+	z-index: 1;
+	background: var(--dark);
+	filter: blur(9px);
+}
+
+#vision .vision-card .vision-card-title,
+#vision .vision-card .vision-card-description {
+	margin-left: 1.5rem;
+}
+
+/* main - visions section - end */

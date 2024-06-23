@@ -1,12 +1,13 @@
 import { useAppData } from "@/AppProvider";
 import MapImage from "@/assets/images/map-white.png";
 import fetching from "@/utils/fetching";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, Fragment, useEffect, useRef, useState } from "react";
 import PinpointType from "@/types/PinpointType";
 import PinpointProvince from "@/assets/images/province-pin.png";
 import PinpointHarbor from "@/assets/images/harbor-pin.png";
 import ComodityType from "@/types/ComodityType";
 import ShipImage from "@/assets/images/ship.png";
+import AnimationFadeSequence from "@/components/AnimationFadeSequence";
 
 export default function Hero() {
 	const [pinpointsData, setPinpointsData] = useState<PinpointType[]>([]);
@@ -146,22 +147,28 @@ export default function Hero() {
 											} as CSSProperties
 										}
 									>
-										{pinpoint.region.comodities.map(
-											(
-												comodity: ComodityType,
-												order: number
-											) => (
-												<img
-													src={comodity.public_icon}
-													alt={`Pinpoint comodity - ${comodity.name}`}
-													style={
-														{
-															"--order": order,
-														} as CSSProperties
-													}
-												/>
-											)
-										)}
+										<AnimationFadeSequence>
+											{pinpoint.region.comodities.map(
+												(
+													comodity: ComodityType,
+													order: number
+												) => (
+													<img
+														key={order}
+														src={
+															comodity.public_icon
+														}
+														alt={`Pinpoint comodity - ${comodity.name}`}
+														style={
+															{
+																"--order":
+																	order,
+															} as CSSProperties
+														}
+													/>
+												)
+											)}
+										</AnimationFadeSequence>
 									</div>
 								)}
 
@@ -180,9 +187,9 @@ export default function Hero() {
 														comodity: ComodityType,
 														i: number
 													) => (
-														<>
-															<a href="" key={i}>
-																<p className="pinpoint-identifier-comodity-inline">
+														<Fragment key={i}>
+															<a href="">
+																<span className="pinpoint-identifier-comodity-inline">
 																	<img
 																		src={
 																			comodity.public_icon
@@ -192,7 +199,7 @@ export default function Hero() {
 																	{
 																		comodity.name
 																	}{" "}
-																</p>
+																</span>
 															</a>
 															{i !=
 															pinpoint.region
@@ -201,7 +208,7 @@ export default function Hero() {
 																1
 																? "|"
 																: ""}
-														</>
+														</Fragment>
 													)
 												)}
 											</p>

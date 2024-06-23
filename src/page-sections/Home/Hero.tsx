@@ -3,6 +3,7 @@ import HeroImage1 from "@/assets/images/hero-image-1.png";
 import HeroImage2 from "@/assets/images/hero-image-2.png";
 import HeroImage3 from "@/assets/images/hero-image-3.png";
 import { CSSProperties } from "react";
+import AnimationFadeSequence from "@/components/AnimationFadeSequence";
 
 export default function Hero() {
 	const {
@@ -14,33 +15,35 @@ export default function Hero() {
 				<section className="container">
 					<h1 className="hero-title">{hero.title}</h1>
 					<section className="hero-image">
-						<img
-							src={HeroImage1}
-							alt="Hero Image"
-							style={
-								{
-									"--order": 1,
-								} as CSSProperties
-							}
-						/>
-						<img
-							src={HeroImage2}
-							alt="Hero Image"
-							style={
-								{
-									"--order": 2,
-								} as CSSProperties
-							}
-						/>
-						<img
-							src={HeroImage3}
-							alt="Hero Image"
-							style={
-								{
-									"--order": 3,
-								} as CSSProperties
-							}
-						/>
+						<AnimationFadeSequence>
+							<img
+								src={HeroImage1}
+								alt="Hero Image"
+								style={
+									{
+										"--order": 1,
+									} as CSSProperties
+								}
+							/>
+							<img
+								src={HeroImage2}
+								alt="Hero Image"
+								style={
+									{
+										"--order": 2,
+									} as CSSProperties
+								}
+							/>
+							<img
+								src={HeroImage3}
+								alt="Hero Image"
+								style={
+									{
+										"--order": 3,
+									} as CSSProperties
+								}
+							/>
+						</AnimationFadeSequence>
 					</section>
 					<p className="hero-description">{hero.description}</p>
 					<section className="hero-buttons">

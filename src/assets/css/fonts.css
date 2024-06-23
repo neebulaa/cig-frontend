@@ -114,3 +114,9 @@
 	font-style: italic;
 	src: url("../fonts/Poppins-BlackItalic.ttf");
 }
+
+@font-face {
+	font-family: "Rubik";
+	font-weight: 500;
+	src: url("../fonts/Rubik-Medium.ttf");
+}
