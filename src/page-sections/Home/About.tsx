@@ -37,7 +37,7 @@ export default function About() {
 				translateY: 0,
 				opacity: 1,
 				duration: 1,
-				delay: 0.5,
+				delay: 0.3,
 				scrollTrigger: {
 					trigger: graphicI.current,
 					start: "top 70%",
@@ -51,7 +51,7 @@ export default function About() {
 				translateY: 0,
 				opacity: 1,
 				duration: 1,
-				delay: 1,
+				delay: .6,
 				scrollTrigger: {
 					trigger: graphicG.current,
 					start: "top 70%",
@@ -87,7 +87,7 @@ export default function About() {
 					</div>
 				</section>
 				<section className="about-content">
-					<header className="section-header">
+					<header className="section-header section-header-left">
 						<h4 className="section-header-title">{about.title}</h4>
 						<h2 className="section-header-tagline">
 							{about.tagline}

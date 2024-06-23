@@ -1,7 +1,12 @@
 import { useAppData } from "@/AppProvider";
 import About from "@/page-sections/Home/About";
+import Benefits from "@/page-sections/Home/Benefits";
+import Clients from "@/page-sections/Home/Clients";
+import Comodities from "@/page-sections/Home/Comodities";
 import Hero from "@/page-sections/Home/Hero";
+import OurTeams from "@/page-sections/Home/OurTeams";
 import Pinpoints from "@/page-sections/Home/Pinpoints";
+import Products from "@/page-sections/Home/Products";
 import Visions from "@/page-sections/Home/Visions";
 
 export default function Home() {
@@ -14,46 +19,11 @@ export default function Home() {
 			<Pinpoints />
 			<About />
 			<Visions />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
+			<Benefits />
+			<Products />
+			<Comodities />
+			<OurTeams />
+			<Clients />
 		</>
 	);
 }

@@ -12,6 +12,31 @@
 	--light-gray: rgb(194, 194, 194);
 	--primary: #ff5b5b;
 	--white: whitesmoke;
+	--accent: #ff7a00;
+
+	/* use it on background, and use psudo element to have the actual background to create border gradient effect */
+	--gradient-border-primary: linear-gradient(
+		to bottom right,
+		var(--gray),
+		rgb(146, 93, 93),
+		var(--dim-gray)
+	);
+
+	/* use it on background, and use psudo element to have the actual background to create border gradient effect */
+	--gradient-border-accent: linear-gradient(
+		to bottom right,
+		var(--gray),
+		#634528,
+		var(--dim-gray)
+	);
+
+	/* use it on background, and use psudo element to have the actual background to create border gradient effect */
+	--gradient-border-gray: linear-gradient(
+		to bottom right,
+		var(--gray),
+		rgb(48, 47, 47),
+		var(--gray)
+	);
 }
 
 body {
@@ -23,6 +48,11 @@ ul,
 ol,
 li {
 	list-style: none;
+	font-weight: 300;
+}
+
+p {
+	font-weight: 300;
 }
 
 a {
@@ -89,6 +119,12 @@ a:not(.btn):hover::after {
 .section-header {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.section-header.section-header-left {
+	align-items: flex-start;
 }
 
 .section-header-title {
@@ -110,7 +146,26 @@ a:not(.btn):hover::after {
 	border-block: 1px solid var(--gray);
 }
 
+button {
+	outline: none;
+	border: none;
+	appearance: none;
+	cursor: pointer;
+	background: none;
+	transition: 0.3s;
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+button:not(:disabled):hover {
+	opacity: 0.8;
+}
+
 .btn {
+	font-size: 0.9rem;
 	position: relative;
 	padding: 0.75rem 1.5rem;
 	border-radius: 100px;
@@ -134,16 +189,59 @@ a:not(.btn):hover::after {
 }
 
 .btn-empty {
-	background: linear-gradient(
-		to bottom right,
-		var(--dim-gray),
-		rgb(146, 93, 93),
-		var(--dim-gray)
-	);
+	background: var(--gradient-border-primary);
 }
 
 .btn-empty::after {
 	background: var(--dark);
+}
+
+.arrow-pagination {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	align-items: center;
+}
+
+.arrow-pagination .left-page-button,
+.arrow-pagination .right-page-button {
+	width: 50px;
+	height: 50px;
+	border-radius: 200px;
+	background: var(--gradient-border-accent);
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--light-gray);
+	z-index: 1;
+}
+
+.arrow-pagination .left-page-button::after,
+.arrow-pagination .right-page-button::after {
+	content: "";
+	z-index: -1;
+	position: absolute;
+	border-radius: 200px;
+	inset: 1px;
+	background: var(--dark);
+}
+
+.arrow-pagination .page-identifiers {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.arrow-pagination .page-identifiers span {
+	width: 5px;
+	height: 5px;
+	background: var(--gray);
+	border-radius: 100px;
+}
+
+.arrow-pagination .page-identifiers span.active {
+	background: var(--white);
 }
 
 /* navbar - start */
@@ -237,18 +335,17 @@ a:not(.btn):hover::after {
 
 .hero-slider .container .sliders {
 	display: flex;
-	min-width: 1240px;
-	max-width: 100%;
+	min-width: max-content;
 	animation: carousel 10s linear infinite;
 }
 
 .hero-slider .container .slider {
-	min-width: 1240px;
-	max-width: 100%;
+	min-width: 1200px;
 	display: flex;
 	gap: 10rem;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	padding-inline: 5rem;
 	text-transform: uppercase;
 }
 /* main - hero section - end */
@@ -256,10 +353,6 @@ a:not(.btn):hover::after {
 /* main - pin points section - start */
 #pinpoints {
 	padding-bottom: 2rem;
-}
-
-#pinpoints .section-header {
-	align-items: center;
 }
 
 #pinpoints .pinpoints-map {
@@ -309,12 +402,7 @@ a:not(.btn):hover::after {
 	padding: 1rem;
 	position: absolute;
 	border-radius: 8px;
-	background: linear-gradient(
-		to bottom right,
-		var(--gray),
-		rgb(146, 93, 93),
-		var(--gray)
-	);
+	background: var(--gradient-border-primary);
 	z-index: 10;
 
 	display: none !important;
@@ -411,21 +499,21 @@ a:not(.btn):hover::after {
 /* main - about section - end */
 
 /* main - visions section - start */
-#vision .vision-split {
+#visions .vision-split {
 	display: flex;
 	gap: 2rem;
 	min-height: 500px;
 }
 
-#vision .vision-split > section {
+#visions .vision-split > section {
 	flex: 1;
 }
 
-#vision .vision-images {
+#visions .vision-images {
 	position: relative;
 }
 
-#vision .vision-images .vision-image {
+#visions .vision-images .vision-image {
 	position: absolute;
 	width: 80%;
 	height: 250px;
@@ -433,39 +521,39 @@ a:not(.btn):hover::after {
 	overflow: hidden;
 }
 
-#vision .vision-images .vision-image:first-child {
+#visions .vision-images .vision-image:first-child {
 	rotate: 5deg;
 }
 
-#vision .vision-images .vision-image:nth-child(2) {
+#visions .vision-images .vision-image:nth-child(2) {
 	rotate: -2deg;
 	top: 28%;
 }
 
-#vision .vision-images .vision-image:last-child {
+#visions .vision-images .vision-image:last-child {
 	rotate: 2deg;
 	top: 55%;
 }
 
-#vision .vision-images .vision-image img {
+#visions .vision-images .vision-image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
 
-#vision .vision-content {
+#visions .vision-content {
 	display: flex;
 	flex-direction: column;
 	gap: 4rem;
 	margin-top: 3rem;
 }
 
-#vision .vision-card {
+#visions .vision-card {
 	position: relative;
 	z-index: 1;
 }
 
-#vision .vision-card .vision-card-number {
+#visions .vision-card .vision-card-number {
 	font-family: "Rubik";
 	font-weight: 500;
 	font-size: 6rem;
@@ -475,11 +563,11 @@ a:not(.btn):hover::after {
 	left: -0.5rem;
 	z-index: -1;
 	color: var(--dark);
-	text-shadow: -1px 0 var(--dim-gray), 0 1px var(--dim-gray), 1px 0 var(--dim-gray),
-		0 -1px var(--dim-gray);
+	text-shadow: -1px 0 var(--dim-gray), 0 1px var(--dim-gray),
+		1px 0 var(--dim-gray), 0 -1px var(--dim-gray);
 }
 
-#vision .vision-card .vision-card-number::after {
+#visions .vision-card .vision-card-number::after {
 	content: "";
 	position: absolute;
 	width: 100%;
@@ -491,9 +579,244 @@ a:not(.btn):hover::after {
 	filter: blur(9px);
 }
 
-#vision .vision-card .vision-card-title,
-#vision .vision-card .vision-card-description {
+#visions .vision-card .vision-card-title,
+#visions .vision-card .vision-card-description {
 	margin-left: 1.5rem;
 }
 
 /* main - visions section - end */
+
+/* main - benefits section - start */
+#benefits .benefit-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 3rem;
+}
+
+#benefits .benefit-cards .benefit-card {
+	flex: 1 1 300px;
+	padding: 2rem;
+	border-radius: 8px;
+	height: 400px;
+	border: 1px solid var(--gray);
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(30px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.benefit-card .benefit-icon {
+	width: 50px;
+	height: 50px;
+	object-fit: contain;
+}
+
+.benefit-card .benefit-title {
+	font-size: 1.1rem;
+}
+
+.benefit-card .benefit-description {
+	color: var(--white);
+}
+
+/* main - benefits section - end */
+
+/* main - products section - start */
+
+#main-products .main-product-cards {
+	margin-top: 3rem;
+	overflow-x: hidden;
+}
+
+#main-products .main-product-cards-watcher {
+	display: flex;
+	translate: calc(var(--slide) * -100%);
+	transition: 0.5s;
+}
+
+#main-products .main-product-card-row {
+	min-width: 100%;
+	display: flex;
+	gap: 1rem;
+}
+
+#main-products .main-product-card-row .main-product-card {
+	flex: 1;
+	height: 400px;
+	border-radius: 8px;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	position: relative;
+	z-index: 1;
+	background: var(--gradient-border-accent);
+}
+
+#main-products .main-product-card-row .main-product-card::before {
+	content: "";
+	background-image: var(--backgroundImage);
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: absolute;
+	inset: 1px;
+	z-index: -1;
+	border-radius: 7.25px;
+}
+
+#main-products .main-product-card-row .main-product-card::after {
+	content: "";
+	position: absolute;
+	inset: 1px;
+	background: linear-gradient(to top, var(--dark), transparent);
+	z-index: -1;
+	border-radius: 7.25px;
+}
+
+/* main - products section - end */
+
+/* main - comodities section - start */
+.comodity-cards {
+	display: grid;
+	margin-top: 3rem;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1rem;
+}
+
+.comodity-cards .comodity-card {
+	display: flex;
+	gap: 0.5rem;
+	padding: 1rem;
+	align-items: center;
+	border-radius: 4px;
+	background: var(--gradient-border-gray);
+}
+
+.comodity-cards .comodity-card {
+	display: flex;
+	gap: 0.5rem;
+	padding: 1rem;
+	align-items: center;
+	border-radius: 5px;
+	background: var(--gradient-border-gray);
+	position: relative;
+	z-index: 1;
+}
+
+.comodity-cards .comodity-card::after {
+	content: "";
+	position: absolute;
+	inset: 1px;
+	background: var(--dark);
+	z-index: -1;
+	border-radius: 4.25px;
+}
+
+.comodity-cards .comodity-card .comodity-icon {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+}
+
+/* main - comodities section - end */
+
+/* main - our team section - start */
+#our-team .member-cards {
+	margin-top: 3rem;
+	overflow-x: hidden;
+}
+
+#our-team .member-cards-watcher {
+	display: flex;
+	translate: calc(var(--slide) * -100%);
+	transition: 0.5s;
+}
+
+#our-team .member-card-row {
+	min-width: 100%;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 2rem;
+}
+
+#our-team .member-card {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+#our-team .member-card .member-card-profile {
+	min-width: 100px;
+	height: 100px;
+	border: 1px solid var(--gray);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--dark);
+}
+
+#our-team .member-card .member-card-profile img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+#our-team .member-card .member-card-about h3 {
+	font-size: 1.1rem;
+}
+
+#our-team .member-card .member-card-about p {
+	font-size: 0.9rem;
+}
+
+/* main - our team section - end */
+
+/* main - our clients section - start */
+#clients .client-sliders-watcher {
+	overflow: hidden;
+	margin-top: 3rem;
+}
+
+#clients .client-sliders {
+	display: flex;
+	min-width: max-content;
+	animation: carousel 10s linear infinite;
+}
+
+#clients .client-sliders:last-child {
+	display: flex;
+	min-width: max-content;
+	animation: carousel-reverse 10s linear infinite;
+}
+
+#clients .client-slider {
+	padding-inline: .5rem;
+	min-width: 1200px;
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+}
+
+#clients .client-slider .client-card {
+	width: 120px;
+	height: 120px;
+	border-radius: 8px;
+	border: 1px solid var(--gray);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	text-align: center;
+	gap: 0.5rem;
+}
+
+#clients .client-slider .client-card .client-logo {
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+}
+/* main - our clients section - end */
