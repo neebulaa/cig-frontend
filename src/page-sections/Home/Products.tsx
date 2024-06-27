@@ -1,18 +1,25 @@
 import { useAppData } from "@/AppProvider";
 import ArrowPagination from "@/components/ArrowPagination";
+import SlideVertical from "@/components/SlideVertical";
 import ProductType from "@/types/ProductType";
 import fetching from "@/utils/fetching";
 import { CSSProperties, useEffect, useState } from "react";
 
-const TOTAL_PRODUCTS_PER_SLIDE = 3;
+let TOTAL_PRODUCTS_PER_SLIDE = 3;
 
 export default function Products() {
 	const [productsData, setProductsData] = useState<ProductType[]>([]);
 	const [currentSlide, setCurrentSlide] = useState(1);
 	const [totalSlide, setTotalSlide] = useState(0);
+	const [runHeaderAnimation, setRunHeaderAnimation] = useState(true);
 	const {
 		main: { products },
+		windowSize,
 	} = useAppData();
+
+	if (windowSize <= 768) {
+		TOTAL_PRODUCTS_PER_SLIDE = 2;
+	}
 
 	async function getData() {
 		const data = await fetching("get", "products");
@@ -26,17 +33,22 @@ export default function Products() {
 	useEffect(() => {
 		getData();
 	}, []);
+
 	return (
 		<section className="section-seperator main-section" id="main-products">
 			<section className="container">
 				<header className="section-header">
-					<h4 className="section-header-title">{products.title}</h4>
-					<h2 className="section-header-tagline">
-						{products.tagline}
-					</h2>
-					<a href={products.button.link} className="btn mt-1">
-						{products.button.text}
-					</a>
+					<SlideVertical runAnimation={runHeaderAnimation}>
+						<h4 className="section-header-title">
+							{products.title}
+						</h4>
+						<h2 className="section-header-tagline">
+							{products.tagline}
+						</h2>
+						<a href={products.button.link} className="btn mt-1">
+							{products.button.text}
+						</a>
+					</SlideVertical>
 				</header>
 				<section
 					className="main-product-cards"
@@ -49,26 +61,31 @@ export default function Products() {
 					<section className="main-product-cards-watcher">
 						{new Array(totalSlide).fill(0).map((_, i) => (
 							<section key={i} className="main-product-card-row">
-								{productsData
-									.slice(
-										i * TOTAL_PRODUCTS_PER_SLIDE,
-										i * TOTAL_PRODUCTS_PER_SLIDE +
-											TOTAL_PRODUCTS_PER_SLIDE
-									)
-									.map((product) => (
-										<article
-											className="main-product-card"
-											key={product.id}
-											style={
-												{
-													"--backgroundImage": `url(${product.public_image})`,
-												} as CSSProperties
-											}
-										>
-											<h3>{product.name}</h3>
-											<p>{product.description}</p>
-										</article>
-									))}
+								<SlideVertical
+									order={2}
+									triggerBySelf={!(windowSize <= 768)}
+								>
+									{productsData
+										.slice(
+											i * TOTAL_PRODUCTS_PER_SLIDE,
+											i * TOTAL_PRODUCTS_PER_SLIDE +
+												TOTAL_PRODUCTS_PER_SLIDE
+										)
+										.map((product) => (
+											<article
+												className="main-product-card"
+												key={product.id}
+												style={
+													{
+														"--backgroundImage": `url(${product.public_image})`,
+													} as CSSProperties
+												}
+											>
+												<h3>{product.name}</h3>
+												<p>{product.description}</p>
+											</article>
+										))}
+								</SlideVertical>
 							</section>
 						))}
 					</section>
@@ -77,7 +94,10 @@ export default function Products() {
 					<ArrowPagination
 						totalPage={totalSlide}
 						currentPage={currentSlide}
-						setPage={(page) => setCurrentSlide(page)}
+						setPage={(page) => {
+							setCurrentSlide(page);
+							setRunHeaderAnimation(false); // Ensure header animation does not re-run
+						}}
 					/>
 				</section>
 			</section>

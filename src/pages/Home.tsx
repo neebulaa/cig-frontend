@@ -8,11 +8,13 @@ import OurTeams from "@/page-sections/Home/OurTeams";
 import Pinpoints from "@/page-sections/Home/Pinpoints";
 import Products from "@/page-sections/Home/Products";
 import Visions from "@/page-sections/Home/Visions";
+import Articles from "@/page-sections/Home/Articles";
+import Certifications from "@/page-sections/Home/Certifications";
+import Location from "@/page-sections/Home/Location";
 
 export default function Home() {
 	const data = useAppData();
-	if (!data.main) return <p>Getting data...</p>;
-	console.log(data.main);
+	if (!data.main) return "";
 	return (
 		<>
 			<Hero />
@@ -24,6 +26,9 @@ export default function Home() {
 			<Comodities />
 			<OurTeams />
 			<Clients />
+			<Articles />
+			<Certifications />
+			<Location />
 		</>
 	);
 }

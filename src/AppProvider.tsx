@@ -15,6 +15,7 @@ export default function AppProvider({ children }: AppProviderProps) {
 	const [pageContent, setPageContent] = useState<PageContentType>(
 		{} as PageContentType
 	);
+	const [windowSize, setWindowSize] = useState(window.innerWidth);
 
 	async function getData() {
 		const pageContent = await fetching("get", "page_contents");
@@ -24,8 +25,16 @@ export default function AppProvider({ children }: AppProviderProps) {
 	useEffect(() => {
 		getData();
 	}, []);
+
+	useEffect(() => {
+		function resize() {
+			setWindowSize(window.innerWidth);
+		}
+		document.addEventListener("resize", resize);
+		return () => document.removeEventListener("resize", resize);
+	}, []);
 	return (
-		<AppDataContext.Provider value={pageContent}>
+		<AppDataContext.Provider value={{ ...pageContent, ...{ windowSize } }}>
 			{children}
 		</AppDataContext.Provider>
 	);

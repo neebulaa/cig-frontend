@@ -5,11 +5,14 @@ import { useAppData } from "@/AppProvider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
+import SlideHorizontal from "@/components/SlideHorizontal";
+import SlideVertical from "@/components/SlideVertical";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
 	const {
 		main: { about },
+		windowSize,
 	} = useAppData();
 
 	const graphicC = useRef(null);
@@ -26,7 +29,7 @@ export default function About() {
 				duration: 1,
 				scrollTrigger: {
 					trigger: graphicC.current,
-					start: "top 70%",
+					start: `top ${windowSize <= 768 ? "40%" : "70%"}`,
 				},
 			}
 		);
@@ -40,7 +43,7 @@ export default function About() {
 				delay: 0.3,
 				scrollTrigger: {
 					trigger: graphicI.current,
-					start: "top 70%",
+					start: `top ${windowSize <= 768 ? "40%" : "70%"}`,
 				},
 			}
 		);
@@ -51,10 +54,10 @@ export default function About() {
 				translateY: 0,
 				opacity: 1,
 				duration: 1,
-				delay: .6,
+				delay: 0.6,
 				scrollTrigger: {
 					trigger: graphicG.current,
-					start: "top 70%",
+					start: `top ${windowSize <= 768 ? "40%" : "70%"}`,
 				},
 			}
 		);
@@ -88,14 +91,40 @@ export default function About() {
 				</section>
 				<section className="about-content">
 					<header className="section-header section-header-left">
-						<h4 className="section-header-title">{about.title}</h4>
-						<h2 className="section-header-tagline">
-							{about.tagline}
-						</h2>
+						{windowSize <= 768 ? (
+							<SlideVertical order={0} triggerBySelf={false}>
+								<h4 className="section-header-title">
+									{about.title}
+								</h4>
+								<h2 className="section-header-tagline">
+									{about.tagline}
+								</h2>
+							</SlideVertical>
+						) : (
+							<SlideHorizontal order={0}>
+								<h4 className="section-header-title">
+									{about.title}
+								</h4>
+								<h2 className="section-header-tagline">
+									{about.tagline}
+								</h2>
+							</SlideHorizontal>
+						)}
 					</header>
-					<p className="about-description mt-05">
-						{about.description}
-					</p>
+
+					{windowSize <= 768 ? (
+						<SlideVertical order={2}>
+							<p className="about-description mt-05">
+								{about.description}
+							</p>
+						</SlideVertical>
+					) : (
+						<SlideHorizontal order={2}>
+							<p className="about-description mt-05">
+								{about.description}
+							</p>
+						</SlideHorizontal>
+					)}
 				</section>
 			</section>
 		</section>

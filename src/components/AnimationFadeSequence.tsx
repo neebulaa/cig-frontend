@@ -14,7 +14,7 @@ type AnimationFadeSequenceProps = {
 export default function AnimationFadeSequence({
 	children,
 }: AnimationFadeSequenceProps) {
-	const childrenRefs = useRef<(HTMLDivElement | null)[]>([]);
+	const childrenRefs = useRef<(HTMLElement | null)[]>([]);
 
 	useEffect(() => {
 		const tl = gsap.timeline({ repeat: -1 }); // repeat: -1 makes the animation loop infinitely
