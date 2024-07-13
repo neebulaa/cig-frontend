@@ -1,8 +1,7 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import ArrowPagination from "@/components/ArrowPagination";
 import CategoryType from "@/types/CategoryType";
 import PostType from "@/types/PostType.ts";
-import fetching from "@/utils/fetching";
 import { CSSProperties, useEffect, useState } from "react";
 import SlideVertical from "@/components/SlideVertical";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -11,12 +10,9 @@ import { Link } from "react-router-dom";
 let TOTAL_POST_PER_SLIDE = 3;
 
 export default function Products() {
-	const [posts, setPosts] = useState<
-		(PostType & { category: CategoryType })[]
-	>([]);
 	const [currentSlide, setCurrentSlide] = useState(1);
-	const [totalSlide, setTotalSlide] = useState(0);
 	const [runHeaderAnimation, setRunHeaderAnimation] = useState(true);
+	const [totalSlide, setTotalSlide] = useState(0);
 
 	const {
 		main: { article },
@@ -27,32 +23,30 @@ export default function Products() {
 		TOTAL_POST_PER_SLIDE = 2;
 	}
 
-	async function getData() {
-		const data = await fetching("get", "articles");
-		const posts = data.data.posts;
-		setPosts(posts);
+	const {
+		articles: posts,
+	}: { articles: (PostType & { category: CategoryType })[] } = useData();
+
+	useEffect(() => {
 		setTotalSlide(() => {
 			return Math.ceil(posts.length / TOTAL_POST_PER_SLIDE);
 		});
-	}
-
-	useEffect(() => {
-		getData();
 	}, []);
+
 	return (
 		<section className="section-seperator main-section" id="articles">
 			<section className="container">
 				<header className="section-header">
 					<SlideVertical runAnimation={runHeaderAnimation}>
-						<h4 className="section-header-title">
+						<h2 className="section-header-title">
 							{article.title}
-						</h4>
+						</h2>
 						<h2 className="section-header-tagline">
 							{article.tagline}
 						</h2>
-						<a href={article.button.link} className="btn mt-1">
+						<Link to={article.button.link} className="btn mt-1">
 							{article.button.text}
-						</a>
+						</Link>
 					</SlideVertical>
 				</header>
 				<section
@@ -128,16 +122,18 @@ export default function Products() {
 						))}
 					</section>
 				</section>
-				<section className="mt-1">
-					<ArrowPagination
-						totalPage={totalSlide}
-						currentPage={currentSlide}
-						setPage={(page) => {
-							setCurrentSlide(page);
-							setRunHeaderAnimation(false); // Ensure header animation does not re-run
-						}}
-					/>
-				</section>
+				{posts.length > TOTAL_POST_PER_SLIDE && (
+					<section className="mt-1">
+						<ArrowPagination
+							totalPage={totalSlide}
+							currentPage={currentSlide}
+							setPage={(page) => {
+								setCurrentSlide(page);
+								setRunHeaderAnimation(false);
+							}}
+						/>
+					</section>
+				)}
 			</section>
 		</section>
 	);

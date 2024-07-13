@@ -14,6 +14,7 @@ export default function ArrowPagination({
 	return (
 		<section className="arrow-pagination">
 			<button
+				aria-label="Prev Slide"
 				className="left-page-button"
 				disabled={currentPage == 1}
 				onClick={() =>
@@ -31,6 +32,7 @@ export default function ArrowPagination({
 				))}
 			</div>
 			<button
+				aria-label="Next Slide"
 				className="right-page-button"
 				disabled={currentPage == totalPage}
 				onClick={() =>

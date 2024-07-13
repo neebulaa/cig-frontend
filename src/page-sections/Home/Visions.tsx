@@ -1,27 +1,22 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import VisionType from "@/types/VisionType";
-import fetching from "@/utils/fetching";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import SlideHorizontal from "@/components/SlideHorizontal";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import SlideVertical from "@/components/SlideVertical";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Visions() {
-	const [visions, setVisions] = useState<VisionType[]>([]);
 	const {
 		main: { our_vision: vision },
 		windowSize,
 	} = useAppData();
 
-	const visionImages = useRef<(HTMLImageElement | null)[]>([]);
+	const { visions }: { visions: VisionType[] } = useData();
 
-	async function getData() {
-		const data = await fetching("get", "visions");
-		setVisions(data.data.visions);
-	}
+	const visionImages = useRef<(HTMLImageElement | null)[]>([]);
 
 	useEffect(() => {
 		if (visions.length === 0) return;
@@ -50,28 +45,24 @@ export default function Visions() {
 		});
 	}, [visions]);
 
-	useEffect(() => {
-		getData();
-	}, []);
-
 	return (
 		<section className="section-seperator main-section" id="visions">
-			<section className="container">
+			<div className="container">
 				<header className="section-header section-header-left">
 					{windowSize <= 768 ? (
 						<SlideVertical order={0}>
-							<h4 className="section-header-title">
+							<h2 className="section-header-title">
 								{vision.title}
-							</h4>
+							</h2>
 							<h2 className="section-header-tagline">
 								{vision.tagline}
 							</h2>
 						</SlideVertical>
 					) : (
 						<SlideHorizontal order={0}>
-							<h4 className="section-header-title">
+							<h2 className="section-header-title">
 								{vision.title}
-							</h4>
+							</h2>
 							<h2 className="section-header-tagline">
 								{vision.tagline}
 							</h2>
@@ -79,20 +70,20 @@ export default function Visions() {
 					)}
 				</header>
 				<section className="vision-split">
-					<section className="vision-content">
+					<div className="vision-content">
 						{windowSize <= 768 ? (
 							<SlideVertical order={1} triggerBySelf={false}>
 								{visions.map((v: VisionType, i: number) => (
 									<article className="vision-card" key={v.id}>
 										<div className="vision-card-image">
-											<LazyLoadImage
+											<img
 												src={v.public_image}
 												alt={`Vision Image - ${v.title}`}
 											/>
 										</div>
-										<h5 className="vision-card-number">
+										<p className="vision-card-number">
 											{i + 1}
-										</h5>
+										</p>
 										<h3 className="vision-card-title">
 											{v.title}
 										</h3>
@@ -107,14 +98,14 @@ export default function Visions() {
 								{visions.map((v: VisionType, i: number) => (
 									<article className="vision-card" key={v.id}>
 										<div className="vision-card-image">
-											<LazyLoadImage
+											<img
 												src={v.public_image}
 												alt={`Vision Image - ${v.title}`}
 											/>
 										</div>
-										<h5 className="vision-card-number">
+										<p className="vision-card-number">
 											{i + 1}
-										</h5>
+										</p>
 										<h3 className="vision-card-title">
 											{v.title}
 										</h3>
@@ -125,8 +116,8 @@ export default function Visions() {
 								))}
 							</SlideHorizontal>
 						)}
-					</section>
-					<section className="vision-images">
+					</div>
+					<div className="vision-images">
 						{visions.map((v, i) => (
 							<figure className="vision-image" key={i}>
 								<img
@@ -136,9 +127,9 @@ export default function Visions() {
 								/>
 							</figure>
 						))}
-					</section>
+					</div>
 				</section>
-			</section>
+			</div>
 		</section>
 	);
 }

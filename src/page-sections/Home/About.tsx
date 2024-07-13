@@ -61,10 +61,12 @@ export default function About() {
 				},
 			}
 		);
-	}, []);
+	}, [windowSize]);
 
 	return (
-		<section className="section-seperator main-section" id="about">
+		<section className="section-seperator main-section" id="about" style={{ 
+			paddingBlock: '6rem'
+		 }}>
 			<section className="container">
 				<section className="about-images">
 					<div className="about-image">
@@ -93,18 +95,18 @@ export default function About() {
 					<header className="section-header section-header-left">
 						{windowSize <= 768 ? (
 							<SlideVertical order={0} triggerBySelf={false}>
-								<h4 className="section-header-title">
+								<h2 className="section-header-title">
 									{about.title}
-								</h4>
+								</h2>
 								<h2 className="section-header-tagline">
 									{about.tagline}
 								</h2>
 							</SlideVertical>
 						) : (
 							<SlideHorizontal order={0}>
-								<h4 className="section-header-title">
+								<h2 className="section-header-title">
 									{about.title}
-								</h4>
+								</h2>
 								<h2 className="section-header-tagline">
 									{about.tagline}
 								</h2>

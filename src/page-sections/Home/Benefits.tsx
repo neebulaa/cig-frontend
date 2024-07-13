@@ -1,36 +1,25 @@
-import { useAppData } from "@/AppProvider";
-import BenefitType from "@/types/BenefitType";
-import fetching from "@/utils/fetching";
-import { useEffect, useRef, useState } from "react";
+import { useAppData, useData } from "@/AppProvider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SlideVertical from "@/components/SlideVertical";
+import BenefitType from "@/types/BenefitType";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Benefits() {
-	const [benefitsData, setBenefitsData] = useState<BenefitType[]>([]);
 	const {
 		main: { benefits },
-		windowSize,
 	} = useAppData();
 
-	async function getData() {
-		const data = await fetching("get", "benefits");
-		setBenefitsData(data.data.benefits);
-	}
-
-	useEffect(() => {
-		getData();
-	}, []);
+	const { benefits: benefitsData }: { benefits: BenefitType[] } = useData();
 
 	return (
 		<section className="section-seperator main-section" id="benefits">
 			<section className="container">
 				<header className="section-header">
 					<SlideVertical>
-						<h4 className="section-header-title">
+						<h2 className="section-header-title">
 							{benefits.title}
-						</h4>
+						</h2>
 						<h2 className="section-header-tagline">
 							{benefits.tagline}
 						</h2>
@@ -38,11 +27,8 @@ export default function Benefits() {
 				</header>
 
 				<section className="benefit-cards">
-					<SlideVertical
-						order={2}
-						triggerBySelf={!(windowSize <= 768)}
-					>
-						{benefitsData.map((benefit, i) => (
+					<SlideVertical order={2} triggerBySelf={false}>
+						{benefitsData.map((benefit) => (
 							<article className="benefit-card" key={benefit.id}>
 								<img
 									className="benefit-icon"

@@ -80,19 +80,21 @@ export default function TravelMore({ posts }: TravelMoreProps) {
 					</SlideVertical>
 				</header>
 
-				<div className="search-icon-box">
-					<IconSearch
-						width={"24"}
-						height={"24"}
-						className="search-icon"
-					/>
-					<input
-						type="text"
-						placeholder="Search post.."
-						value={search}
-						onChange={handleInputChange}
-					/>
-				</div>
+				<SlideVertical runAnimation={runHeaderAnimation}>
+					<div className="search-icon-box">
+						<IconSearch
+							width={"24"}
+							height={"24"}
+							className="search-icon"
+						/>
+						<input
+							type="text"
+							placeholder="Search post.."
+							value={search}
+							onChange={handleInputChange}
+						/>
+					</div>
+				</SlideVertical>
 
 				<section
 					className="article-cards"
@@ -174,16 +176,18 @@ export default function TravelMore({ posts }: TravelMoreProps) {
 						))}
 					</section>
 				</section>
-				<section className="mt-1">
-					<ArrowPagination
-						totalPage={totalSlide}
-						currentPage={currentSlide}
-						setPage={(page) => {
-							setCurrentSlide(page);
-							setRunHeaderAnimation(false); // Ensure header animation does not re-run
-						}}
-					/>
-				</section>
+				{searchedPosts.length > 0 ? (
+					<section className="mt-1">
+						<ArrowPagination
+							totalPage={totalSlide}
+							currentPage={currentSlide}
+							setPage={(page) => {
+								setCurrentSlide(page);
+								setRunHeaderAnimation(false); // Ensure header animation does not re-run
+							}}
+						/>
+					</section>
+				) : <p style={{ textAlign: 'center' }}>No posts founded</p>}
 			</section>
 		</section>
 	);

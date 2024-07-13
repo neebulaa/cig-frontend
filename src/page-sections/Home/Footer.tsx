@@ -1,74 +1,113 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import IconLocation from "@/assets/icons/IconLocation";
 import IconPhone from "@/assets/icons/IconPhone";
 import SlideVertical from "@/components/SlideVertical";
 import CompanyType from "@/types/CompanyType";
 import SocialType from "@/types/SocialType";
-import fetching from "@/utils/fetching";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Footer() {
-	const [company, setCompany] = useState<CompanyType>({} as CompanyType);
-	const [socials, setSocials] = useState<SocialType[]>([]);
+	const [runAnimation, setRunAnimation] = useState(true);
 	const { windowSize } = useAppData();
+
+	const {
+		socials,
+		my_company: company,
+	}: { socials: SocialType[]; my_company: CompanyType } = useData();
 
 	const links = [
 		{
 			text: "About Us",
-			path: "/#about",
+			path: "#about",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Our Visions",
-			path: "/#visions",
+			path: "#visions",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Benefits",
-			path: "/#benefits",
-		},
-		{
-			text: "Our Clients",
-			path: "/#clients",
+			path: "#benefits",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Products",
-			path: "/#products",
+			path: "#main-products",
+			type: "hash",
+			parent: "/",
+		},
+		{
+			text: "Commodities",
+			path: "#comodities",
+			type: "hash",
+			parent: "/",
+		},
+		{
+			text: "Our Team",
+			path: "#our-team",
+			type: "hash",
+			parent: "/",
+		},
+		{
+			text: "Clients",
+			path: "#clients",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Articles",
-			path: "/#articles",
+			path: "#articles",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Certifications",
-			path: "/#certifications",
+			path: "#certifications",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Location",
-			path: "/#location",
+			path: "#location",
+			type: "hash",
+			parent: "/",
+		},
+		{
+			text: "Main",
+			path: "#articles-main",
+			type: "hash",
+			parent: "/articles",
+		},
+		{
+			text: "Latest",
+			path: "#latest",
+			type: "hash",
+			parent: "/articles",
+		},
+		{
+			text: "More",
+			path: "#travel_more",
+			type: "hash",
+			parent: "/articles",
 		},
 	];
 
-	async function getData() {
-		const dataCompany = await fetching("get", "my_company");
-		const dataSocial = await fetching("get", "socials");
-		if (dataCompany.status == 200) {
-			setCompany(dataCompany.data.company);
-		}
-
-		if (dataSocial.status == 200) {
-			setSocials(dataSocial.data.socials);
-		}
+	function getMenus() {
+		const { pathname } = useLocation();
+		return links.filter((link) => link.parent == pathname);
 	}
-
-	useEffect(() => {
-		getData();
-	}, []);
 
 	return (
 		<>
 			{Object.keys(company).length > 0 && (
 				<section className="section-seperator main-section" id="footer">
 					<section className="container">
-						<SlideVertical>
+						<SlideVertical runAnimation={runAnimation}>
 							<section className="company-description">
 								<section className="company-logo">
 									<img
@@ -92,21 +131,53 @@ export default function Footer() {
 							</section>
 						</SlideVertical>
 
-						<SlideVertical order={windowSize <= 768 ? 0 : 2}>
-							<ul className="footer-part footer-menu">
-								<h4>Menu</h4>
-								{links.map((link, i) => (
-									<li key={i}>
-										<a href={link.path}>{link.text}</a>
-									</li>
-								))}
-							</ul>
-						</SlideVertical>
-						<SlideVertical order={windowSize <= 768 ? 0 : 3}>
+						{getMenus().length > 0 && (
+							<SlideVertical
+								order={windowSize <= 768 ? 0 : 2}
+								runAnimation={runAnimation}
+							>
+								<section className="footer-part">
+									<h4>Menu</h4>
+									<ul className="footer-menu">
+										{getMenus().map((link, i) => (
+											<li key={i}>
+												{link.type == "page" ? (
+													<Link
+														to={link.path}
+														onClick={() => {
+															setRunAnimation(
+																false
+															);
+														}}
+													>
+														{link.text}
+													</Link>
+												) : (
+													<a
+														href={link.path}
+														onClick={() => {
+															setRunAnimation(
+																false
+															);
+														}}
+													>
+														{link.text}
+													</a>
+												)}
+											</li>
+										))}
+									</ul>
+								</section>
+							</SlideVertical>
+						)}
+						<SlideVertical
+							order={windowSize <= 768 ? 0 : 3}
+							runAnimation={runAnimation}
+						>
 							<section className="footer-part company-info">
 								<h4>Company Info</h4>
 								<p className="company-address">
-									<IconLocation width={"30"} height={"30"} />
+									<IconLocation width={"24"} height={"24"} />
 									{company.address}
 								</p>
 								<p className="company-contact">

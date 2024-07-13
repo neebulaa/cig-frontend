@@ -1,4 +1,4 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import About from "@/page-sections/Home/About";
 import Benefits from "@/page-sections/Home/Benefits";
 import Clients from "@/page-sections/Home/Clients";
@@ -11,14 +11,20 @@ import Visions from "@/page-sections/Home/Visions";
 import Articles from "@/page-sections/Home/Articles";
 import Certifications from "@/page-sections/Home/Certifications";
 import Location from "@/page-sections/Home/Location";
+import { useEffect } from "react";
+import HighlightedRegions from "@/page-sections/Home/HighlightedRegions";
 
 export default function Home() {
-	const data = useAppData();
-	if (!data.main) return "";
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
+
+	const { windowSize } = useAppData();
+
 	return (
 		<>
 			<Hero />
-			<Pinpoints />
+			{windowSize <= 768 ? <HighlightedRegions /> : <Pinpoints />}
 			<About />
 			<Visions />
 			<Benefits />

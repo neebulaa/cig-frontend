@@ -4,9 +4,9 @@ import HeroImage2 from "@/assets/images/hero-image-2.png";
 import HeroImage3 from "@/assets/images/hero-image-3.png";
 import { CSSProperties } from "react";
 import AnimationFadeSequence from "@/components/AnimationFadeSequence";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import SlideVertical from "@/components/SlideVertical";
 import SlideHorizontal from "@/components/SlideHorizontal";
+import { HashLink } from "react-router-hash-link";
 
 export default function Hero() {
 	const {
@@ -22,50 +22,41 @@ export default function Hero() {
 				<SlideVertical order={1}>
 					<figure className="hero-image">
 						<AnimationFadeSequence>
-							<div>
-								<LazyLoadImage
-									effect="opacity"
-									src={HeroImage1}
-									alt="Hero Image 1"
-									style={{ "--order": 1 } as CSSProperties}
-								/>
-							</div>
-							<div>
-								<LazyLoadImage
-									effect="opacity"
-									src={HeroImage2}
-									alt="Hero Image 2"
-									style={{ "--order": 2 } as CSSProperties}
-								/>
-							</div>
-							<div>
-								<LazyLoadImage
-									effect="opacity"
-									src={HeroImage3}
-									alt="Hero Image 3"
-									style={{ "--order": 3 } as CSSProperties}
-								/>
-							</div>
+							<img
+								src={HeroImage1}
+								alt="Hero Image 1"
+								style={{ "--order": 1 } as CSSProperties}
+							/>
+							<img
+								src={HeroImage2}
+								alt="Hero Image 2"
+								style={{ "--order": 2 } as CSSProperties}
+							/>
+							<img
+								src={HeroImage3}
+								alt="Hero Image 3"
+								style={{ "--order": 3 } as CSSProperties}
+							/>
 						</AnimationFadeSequence>
 					</figure>
 				</SlideVertical>
 				<SlideVertical order={2}>
 					<p className="hero-description">{hero.description}</p>
 					<nav className="hero-buttons" aria-label="Hero buttons">
-						<a
-							href={hero.left_button.link}
+						<HashLink
+							to={hero.left_button.link}
 							className="btn"
 							aria-label={hero.left_button.text}
 						>
 							{hero.left_button.text}
-						</a>
-						<a
-							href={hero.right_button.link}
+						</HashLink>
+						<HashLink
+							to={hero.right_button.link}
 							className="btn btn-empty"
 							aria-label={hero.right_button.text}
 						>
 							{hero.right_button.text}
-						</a>
+						</HashLink>
 					</nav>
 				</SlideVertical>
 			</div>

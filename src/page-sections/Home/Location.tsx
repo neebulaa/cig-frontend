@@ -1,35 +1,23 @@
-import { useAppData } from "@/AppProvider";
-import fetching from "@/utils/fetching";
-import { useEffect, useState } from "react";
+import { useAppData, useData } from "@/AppProvider";
 import CompanyType from "@/types/CompanyType";
 import IconCopy from "./../../assets/icons/IconCopy";
 import SlideVertical from "@/components/SlideVertical";
 
 export default function Location() {
-	const [company, setCompany] = useState<CompanyType>({} as CompanyType);
 	const {
 		main: { location },
 	} = useAppData();
 
-	async function getData() {
-		const data = await fetching("get", "my_company");
-		if (data.status == 200) {
-			setCompany(data.data.company);
-		}
-	}
-
-	useEffect(() => {
-		getData();
-	}, []);
+	const { my_company: company }: { my_company: CompanyType } = useData();
 
 	return (
 		<section className="section-seperator main-section" id="location">
-			<section className="container">
+			<div className="container">
 				<header className="section-header">
 					<SlideVertical>
-						<h4 className="section-header-title">
+						<h2 className="section-header-title">
 							{location.title}
-						</h4>
+						</h2>
 						<h2 className="section-header-tagline">
 							{location.tagline}
 						</h2>
@@ -37,26 +25,33 @@ export default function Location() {
 				</header>
 
 				<SlideVertical order={2}>
-					<section className="location-content">
+					<div className="location-content">
 						<p className="location-label">{company.address}</p>
-						<button className="btn location-copy">
+						<button
+							className="btn location-copy"
+							onClick={() =>
+								navigator.clipboard.writeText(company.address)
+							}
+						>
 							<IconCopy width={"24"} height={"24"} />
 							Copy Address
 						</button>
-					</section>
+					</div>
 				</SlideVertical>
 
 				<SlideVertical order={3}>
-					<section className="location-map">
+					<div className="location-map">
 						<iframe
 							title={`Map of ${company.name}`}
 							src={company.iframe_src}
 							style={{ border: 0 }}
 							loading="lazy"
+							width="100%"
+							height="400"
 						></iframe>
-					</section>
+					</div>
 				</SlideVertical>
-			</section>
+			</div>
 		</section>
 	);
 }

@@ -1,65 +1,93 @@
-import { useEffect, useState, useRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useEffect, useState, useRef, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import SlideVertical from "./SlideVertical";
+import { useData } from "@/AppProvider";
 import CompanyType from "@/types/CompanyType";
-import fetching from "@/utils/fetching";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
 	const [openNavbar, setOpenNavbar] = useState(false);
-	const [company, setCompany] = useState<CompanyType>({} as CompanyType);
 	const [runAnimation, setRunAnimation] = useState(true);
 	const navRef = useRef<HTMLDivElement>(null);
 
+	const { my_company: company }: { my_company: CompanyType } = useData();
 	const { pathname, hash } = useLocation();
 	const links = [
 		{
 			text: "Home",
 			path: "/#",
-			active: hash === "#",
+			active: pathname == "/" && hash === "#",
+			type: "page",
 		},
 		{
 			text: "About Us",
-			path: "/#about",
+			path: "#about",
 			active: hash === "#about",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Products",
-			path: "/products",
-			active: pathname === "/products",
+			path: "#main-products",
+			active: hash === "#main-products",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Commodities",
-			path: "/#comodities",
+			path: "#comodities",
 			active: hash === "#comodities",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Clients",
-			path: "/#clients",
+			path: "#clients",
 			active: hash === "#clients",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Articles",
-			path: "/articles",
-			active: pathname === "/articles",
+			path: "#articles",
+			active: hash === "#articles",
+			type: "hash",
+			parent: "/",
 		},
 		{
 			text: "Certifications",
-			path: "/#certifications",
+			path: "#certifications",
 			active: hash === "#certifications",
+			type: "hash",
+			parent: "/",
+		},
+		{
+			text: "Catalog",
+			path: "/products",
+			active: pathname === "/products",
+			type: "page",
+		},
+		{
+			text: "Blog",
+			path: "/articles#",
+			active: pathname === "/articles",
+			type: "page",
+		},
+		{
+			text: "Latest",
+			path: "#latest",
+			active: hash === "#latest",
+			type: "hash",
+			parent: "/articles",
+		},
+		{
+			text: "More",
+			path: "#travel_more",
+			active: hash === "#travel_more",
+			type: "hash",
+			parent: "/articles",
 		},
 	];
-
-	async function getData() {
-		const dataCompany = await fetching("get", "my_company");
-		if (dataCompany.status === 200) {
-			setCompany(dataCompany.data.company);
-		}
-	}
-
-	useEffect(() => {
-		getData();
-	}, []);
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -83,60 +111,71 @@ export default function Navbar() {
 		<nav
 			className="container"
 			id="navbar"
-			aria-description="A Navbar to navigate across pages"
 			ref={navRef}
+			aria-description="A Navbar to navigate across pages"
 		>
-			{Object.keys(company).length === 0 ? (
-				""
-			) : (
-				<SlideVertical
-					runAnimation={runAnimation}
-					order={2}
-					moveByProperty="positioning"
+			<SlideVertical
+				runAnimation={runAnimation}
+				order={2}
+				moveByProperty="positioning"
+			>
+				<div
+					className="navbar-container"
+					style={{ position: "relative" }}
 				>
+					<section className="navbar-logo">
+						<img src={company.public_logo} alt="CIG's Logo" />
+					</section>
+					<ul className={`navbar-links ${openNavbar ? "open" : ""}`}>
+						{links.map((link, i) => (
+							<Fragment key={i}>
+								{(link.type == "page" ||
+									(link.type == "hash" &&
+										link.parent == pathname)) && (
+									<li>
+										{link.type == "page" ? (
+											<Link
+												to={link.path}
+												onClick={() => {
+													setRunAnimation(false);
+												}}
+												className={
+													link.active ? "active" : ""
+												}
+											>
+												{link.text}
+											</Link>
+										) : (
+											<a
+												href={link.path}
+												onClick={() => {
+													setRunAnimation(false);
+												}}
+												className={
+													link.active ? "active" : ""
+												}
+											>
+												{link.text}
+											</a>
+										)}
+									</li>
+								)}
+							</Fragment>
+						))}
+					</ul>
 					<div
-						className="navbar-container"
-						style={{ position: "relative" }}
+						className={`hamburger-menu ${openNavbar ? "open" : ""}`}
+						onClick={() => {
+							setOpenNavbar((prev) => !prev);
+							setRunAnimation(false);
+						}}
 					>
-						<section className="navbar-logo">
-							<LazyLoadImage
-								src={company.public_logo}
-								alt="CIG's Logo"
-							/>
-						</section>
-						<ul
-							className={`navbar-links ${
-								openNavbar ? "open" : ""
-							}`}
-						>
-							{links.map((link, i) => (
-								<li key={i}>
-									<a
-										href={link.path}
-										onClick={() => setRunAnimation(false)}
-										className={link.active ? "active" : ""}
-									>
-										{link.text}
-									</a>
-								</li>
-							))}
-						</ul>
-						<div
-							className={`hamburger-menu ${
-								openNavbar ? "open" : ""
-							}`}
-							onClick={() => {
-								setOpenNavbar((prev) => !prev);
-								setRunAnimation(false);
-							}}
-						>
-							<span></span>
-							<span></span>
-							<span></span>
-						</div>
+						<span></span>
+						<span></span>
+						<span></span>
 					</div>
-				</SlideVertical>
-			)}
+				</div>
+			</SlideVertical>
 		</nav>
 	);
 }

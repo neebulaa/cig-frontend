@@ -1,6 +1,5 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import MapImage from "@/assets/images/map-white.png";
-import fetching from "@/utils/fetching";
 import { CSSProperties, Fragment, useEffect, useRef, useState } from "react";
 import PinpointType from "@/types/PinpointType";
 import PinpointProvince from "@/assets/images/province-pin.png";
@@ -8,12 +7,12 @@ import PinpointHarbor from "@/assets/images/harbor-pin.png";
 import ComodityType from "@/types/ComodityType";
 import ShipImage from "@/assets/images/ship.png";
 import AnimationFadeSequence from "@/components/AnimationFadeSequence";
-import SlideVertical from "@/components/SlideVertical";
 import FadeIn from "@/components/FadeIn";
+import SlideVertical from "@/components/SlideVertical";
+import { Link } from "react-router-dom";
 
-export default function Hero() {
+export default function Pinpoints() {
 	const [runAnimation, setRunAnimation] = useState(true);
-	const [pinpointsData, setPinpointsData] = useState<PinpointType[]>([]);
 	const [provinceImageDimensions, setProvinceImageDimensions] = useState({
 		width: 0,
 		height: 0,
@@ -22,10 +21,8 @@ export default function Hero() {
 		width: 0,
 		height: 0,
 	});
-	const [mapDimensions, setMapDimensions] = useState({
-		width: 0,
-		height: 0,
-	});
+	const [runHeaderAnimation, setRunHeaderAnimation] = useState(true);
+	const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
 	const [visibleDescriptions, setVisibleDescriptions] = useState<
 		Record<number, boolean>
 	>({});
@@ -38,14 +35,8 @@ export default function Hero() {
 		main: { pinpoints },
 	} = useAppData();
 
-	async function getData() {
-		const data = await fetching("get", "pinpoints");
-		setPinpointsData(data.data.pinpoints);
-	}
-
-	useEffect(() => {
-		getData();
-	}, []);
+	const { pinpoints: pinpointsData }: { pinpoints: PinpointType[] } =
+		useData();
 
 	useEffect(() => {
 		if (provinceImgRef.current) {
@@ -66,10 +57,7 @@ export default function Hero() {
 
 		if (mapImgRef.current) {
 			const mapRect = mapImgRef.current.getBoundingClientRect();
-			setMapDimensions({
-				width: mapRect.width,
-				height: mapRect.height,
-			});
+			setMapDimensions({ width: mapRect.width, height: mapRect.height });
 		}
 	}, [pinpointsData]);
 
@@ -80,19 +68,19 @@ export default function Hero() {
 
 	return (
 		<section id="pinpoints" className="main-section">
-			<section className="container">
+			<div className="container">
 				<header className="section-header">
-					<SlideVertical runAnimation={runAnimation}>
-						<h4 className="section-header-title">
+					<SlideVertical runAnimation={runHeaderAnimation}>
+						<h2 className="section-header-title">
 							{pinpoints.title}
-						</h4>
+						</h2>
 						<h2 className="section-header-tagline">
 							{pinpoints.tagline}
 						</h2>
 					</SlideVertical>
 				</header>
 				<FadeIn order={2} runAnimation={runAnimation}>
-					<section className="pinpoints-map">
+					<div className="pinpoints-map">
 						{/* Hidden images to get dimensions */}
 						<img
 							ref={provinceImgRef}
@@ -131,29 +119,29 @@ export default function Hero() {
 									? provinceImageDimensions
 									: harborImageDimensions;
 
+								const top =
+									parseFloat(pinpoint.pos_y as string) -
+									(height / mapDimensions.height) * 100;
+
+								const left =
+									parseFloat(pinpoint.pos_x as string) -
+									(width / 2 / mapDimensions.width) * 100;
+
+								const identifierPosition =
+									left > 30 && left < 70
+										? "center"
+										: left > 70
+										? "right"
+										: "left";
+
 								return (
 									<div
 										key={i}
 										className="pinpoint"
 										style={
 											{
-												"--top": `${
-													parseFloat(
-														pinpoint.pos_y as string
-													) -
-													(height /
-														mapDimensions.height) *
-														100
-												}`,
-												"--left": `${
-													parseFloat(
-														pinpoint.pos_x as string
-													) -
-													(width /
-														2 /
-														mapDimensions.width) *
-														100
-												}`,
+												"--top": `${top}`,
+												"--left": `${left}`,
 											} as CSSProperties
 										}
 									>
@@ -205,9 +193,9 @@ export default function Hero() {
 										)}
 
 										<div
-											className={`pinpoint-identifier identifier-${pinpoint.region.type}`}
+											className={`pinpoint-identifier identifier-${pinpoint.region.type} identifier-${identifierPosition}`}
 										>
-											{isProvince && (
+											{isProvince ? (
 												<>
 													<h5 className="pinpoint-identifier-name">
 														{pinpoint.region.name}
@@ -222,7 +210,9 @@ export default function Hero() {
 																<Fragment
 																	key={i}
 																>
-																	<a href="">
+																	<Link
+																		to={`/products?commodity=${comodity.slug}`}
+																	>
 																		<span className="pinpoint-identifier-comodity-inline">
 																			<img
 																				src={
@@ -234,30 +224,32 @@ export default function Hero() {
 																				comodity.name
 																			}{" "}
 																		</span>
-																	</a>
-																	{i !=
-																	pinpoint
-																		.region
-																		.comodities
-																		.length -
-																		1
-																		? "|"
-																		: ""}
+																	</Link>
+																	{i !==
+																		pinpoint
+																			.region
+																			.comodities
+																			.length -
+																			1 &&
+																		" | "}
 																</Fragment>
 															)
 														)}
 													</p>
-													<p
+													<button
 														className="pinpoint-identifier-why mt-05"
-														onClick={() =>
+														onClick={() => {
 															toggleDescriptionVisibility(
 																i
-															)
-														}
+															);
+															setRunHeaderAnimation(
+																false
+															);
+														}}
 													>
 														Why{" "}
 														{pinpoint.region.name}?
-													</p>
+													</button>
 													{visibleDescriptions[i] && (
 														<p className="pinpoint-identifier-description">
 															{
@@ -267,8 +259,7 @@ export default function Hero() {
 														</p>
 													)}
 												</>
-											)}
-											{!isProvince && (
+											) : (
 												<>
 													<img
 														src={ShipImage}
@@ -290,9 +281,9 @@ export default function Hero() {
 							alt="Indonesia Map"
 							className="map-image"
 						/>
-					</section>
+					</div>
 				</FadeIn>
-			</section>
+			</div>
 		</section>
 	);
 }

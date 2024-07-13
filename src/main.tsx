@@ -6,11 +6,12 @@ import "@/assets/css/fonts.css";
 import "@/assets/css/index.css";
 import "@/assets/css/responsive.css";
 import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
+	<HelmetProvider>
 		<BrowserRouter>
 			<App />
 		</BrowserRouter>
-	</React.StrictMode>
+	</HelmetProvider>
 );

@@ -1,31 +1,33 @@
-import { useAppData } from "@/AppProvider";
+import { useAppData, useData } from "@/AppProvider";
 import Latest from "@/page-sections/Blog/Latest";
 import Main from "@/page-sections/Blog/Main";
 import TravelMore from "@/page-sections/Blog/TravelMore";
 import CategoryType from "@/types/CategoryType";
 import PostType from "@/types/PostType";
-import fetching from "@/utils/fetching";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 export default function Blog() {
-	const [posts, setPosts] = useState<
-		(PostType & { category: CategoryType })[]
-	>([]);
 	const data = useAppData();
+	const { blog: posts }: { blog: (PostType & { category: CategoryType })[] } =
+		useData();
 
 	useEffect(() => {
-		async function getData() {
-			const response = await fetching("get", "articles?get=all");
-			setPosts(response.data.posts);
-		}
-
-		getData();
+		window.scrollTo(0, 0);
 	}, []);
-
-	if (!data.articles) return null;
 
 	return (
 		<>
+			<Helmet>
+				<meta charSet="utf-8" />
+				<title>
+					PT Crescentia Indo Global | {data.articles.main.title}
+				</title>
+				<link
+					rel="description"
+					content={data.articles.main.description}
+				/>
+			</Helmet>
 			{posts.length > 0 && (
 				<>
 					<Main post={posts[0]} />
